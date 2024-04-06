@@ -23,6 +23,6 @@ jobs:
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4.3.1
       with:
-        name: x-pack-core-"${VERSION}".crack.jar
-        path: /tmp/output/x-pack-core-"${VERSION}".crack.jar
+        name: x-pack-core-${{ env.VERSION }}.crack.jar
+        path: /tmp/output/x-pack-core-${{ env.VERSION }}.crack.jar
 
