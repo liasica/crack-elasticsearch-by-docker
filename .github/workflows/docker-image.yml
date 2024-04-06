@@ -25,4 +25,8 @@ jobs:
       with:
         name: x-pack-core-${{ env.VERSION }}.crack.jar
         path: /tmp/output/x-pack-core-${{ env.VERSION }}.crack.jar
-
+    - name: Release
+      uses: softprops/action-gh-release@v2.0.4
+      with:
+        files: /tmp/output/x-pack-core-${{ env.VERSION }}.crack.jar
+        
