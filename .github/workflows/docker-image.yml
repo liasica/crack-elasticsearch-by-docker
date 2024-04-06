@@ -13,11 +13,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - name: Set Environment
       run: export $(cat .env | xargs) && echo $VERSION && echo "VERSION=$VERSION" >> $GITHUB_ENV
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag crack-elasticsearch --build-arg VERSION="${VERSION}"
     - name: Run Crack
       run: docker run -t --rm -v $(pwd)/output:/crack/output crack-elasticsearch && ls -lah output/x-pack-core-"${VERSION}".crack.jar
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v4.3.1
+      with:
+        name: x-pack-core-"${VERSION}".crack.jar
+        path: output/x-pack-core-"${VERSION}".crack.jar
 
