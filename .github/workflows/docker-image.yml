@@ -1,0 +1,21 @@
+name: Build
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag crack-elasticsearch:$(date +%s)
+    - name: Run the Crack Shell
+      run: export $(cat .env | xargs) && echo $VERSION && bash crack.sh $VERSION && ls -lah output/x-pack-core-$version.crack.jar
+
