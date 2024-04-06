@@ -17,7 +17,9 @@ jobs:
     - name: Set Environment
       run: export $(cat .env | xargs) && echo $VERSION && echo "VERSION=$VERSION" >> $GITHUB_ENV
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag crack-elasticsearch:$(date +%s) --build-arg VERSION="${VERSION}"
-    - name: Run the Crack Shell
-      run: bash crack.sh $VERSION && ls -lah output/x-pack-core-$version.crack.jar
+      run: docker build . --file Dockerfile --tag crack-elasticsearch --build-arg VERSION="${VERSION}"
+    # - name: Run the Crack Shell
+    #   run: bash crack.sh $VERSION && ls -lah output/x-pack-core-$version.crack.jar
+    - name: Run Crack
+      run: docker run -t --rm -v $(pwd)/output:/crack/output crack-elasticsearch && ls -lah output/x-pack-core-$version.crack.jar
 
