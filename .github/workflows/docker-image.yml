@@ -13,9 +13,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Set Environment
+      run: export $(cat .env | xargs) && echo $VERSION
     - uses: actions/checkout@v3
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag crack-elasticsearch:$(date +%s)
+      run: docker build . --file Dockerfile --tag crack-elasticsearch:$(date +%s) --build-arg VERSION="${VERSION}"
     - name: Run the Crack Shell
-      run: export $(cat .env | xargs) && echo $VERSION && bash crack.sh $VERSION && ls -lah output/x-pack-core-$version.crack.jar
+      run: bash crack.sh $VERSION && ls -lah output/x-pack-core-$version.crack.jar
 
