@@ -19,10 +19,10 @@ jobs:
     - name: Build the Docker image
       run: docker build . --file Dockerfile --tag crack-elasticsearch --build-arg VERSION="${VERSION}"
     - name: Run Crack
-      run: docker run -t --rm -v $(pwd)/output:/crack/output crack-elasticsearch && ls -lah output/x-pack-core-"${VERSION}".crack.jar && cp output/x-pack-core-"${VERSION}".crack.jar $GITHUB_WORKSPACE/x-pack-core-"${VERSION}".crack.jar
+      run: docker run -t --rm -v /tmp/output:/crack/output crack-elasticsearch && ls -lah /tmp/output/x-pack-core-"${VERSION}".crack.jar
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4.3.1
       with:
         name: x-pack-core-"${VERSION}".crack.jar
-        path: $GITHUB_WORKSPACE/x-pack-core-"${VERSION}".crack.jar
+        path: /tmp/output/x-pack-core-"${VERSION}".crack.jar
 
