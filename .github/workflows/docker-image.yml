@@ -1,0 +1,33 @@
+name: Build
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Set Environment
+      run: export $(cat .env | xargs) && echo $VERSION && echo "VERSION=$VERSION" >> $GITHUB_ENV
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag crack-elasticsearch --build-arg VERSION="${VERSION}"
+    - name: Run Crack
+      run: docker run -t --rm -v /tmp/output:/crack/output crack-elasticsearch && ls -lah /tmp/output/x-pack-core-"${VERSION}".crack.jar
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v4.3.1
+      with:
+        name: x-pack-core-${{ env.VERSION }}.crack.jar
+        path: /tmp/output/x-pack-core-${{ env.VERSION }}.crack.jar
+    - name: Release
+      uses: softprops/action-gh-release@v2.0.4
+      with:
+        tag_name: ${{ env.VERSION }}
+        files: /tmp/output/x-pack-core-${{ env.VERSION }}.crack.jar
+        
