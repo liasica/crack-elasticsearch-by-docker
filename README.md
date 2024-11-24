@@ -2,10 +2,25 @@
 
 Crack elasticsearch 7.x / 8.x by docker
 
-适用于破解elasticsearch 7.x / 8.x 的自动脚本
+适用于破解elasticsearch 7.x / 8.x 的自动脚本，可自动在容器内编译生成破解补丁。
 
-已测试版本
+已测试可编译版本
+* elasticsearch 7.17.2
+
+已测试自动安装版本
 * elasticsearch 8.2.0
+* elasticsearch 8.8.1
+* elasticsearch 8.9.1
+* elasticsearch 8.10.1
+* elasticsearch 8.11.1
+* elasticsearch 8.12.1
+
+企业版证书导入验证
+
+* elasticsearch 8.12.2
+
+**无法验证导入企业版证书后的稳定性与可用性**
+
 
 ## Usage
 
@@ -24,7 +39,7 @@ Run srcipt with version
 ```shell
 cd crack-elasticsearch-by-docker
 version=8.2.0
-bash crack.sh $version
+sudo bash crack.sh $version
 ```
 
 Get cracked x-pack-core-$version.jar
@@ -37,6 +52,21 @@ cp output/x-pack-core-$version.crack.jar /usr/share/elasticsearch/modules/x-pack
 
 # Docker安装
 -v output/x-pack-core-$version.crack.jar:/usr/share/elasticsearch/modules/x-pack-core/x-pack-core-$version.jar
+```
+
+## Crack and install
+
+You can directly complete the specified version of cracking and Docker installation (single node) through scripts
+可以直接通过脚本完成指定版本的破解和Docker安装（单节点）
+
+Users can adjust parameters according to their own needs, and this script is only for reference.
+使用者可根据自身需求调整参数，该脚本仅作为参考。
+
+```
+git clone https://github.com/wolfbolin/crack-elasticsearch-by-docker.git
+cd crack-elasticsearch-by-docker
+version=8.2.0
+sudo bash crack_and_install.sh $version
 ```
 
 ## Platinum License
@@ -79,5 +109,4 @@ docker run -it --rm \
   -e HTTPS_PROXY="http://1.2.3.4:8080" \
   ${service_name}:${version}
 ```
-
 
